@@ -36,4 +36,25 @@ class main extends CI_Controller{
 	function head(){
 		$this->load->view("includes/header");
 	}
+	function contact_list(){
+		$this->load->model('model_contacts');
+	  	$data['contacts']=	$this->model_contacts->contact_list();
+		$this->load->view('listof_contacts',$data);
+	
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
