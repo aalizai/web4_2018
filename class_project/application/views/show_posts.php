@@ -9,3 +9,5 @@
 <?php echo anchor('posts/delete_post/'.$post->p_id,"<button>Delete</button>",
 array('onclick'=>"return confirm('are you sure !!!!!')"))?>
 <?php endforeach?>
+
+<?php echo $this->pagination->create_links()?>
