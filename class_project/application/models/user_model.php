@@ -12,4 +12,16 @@ class user_model extends CI_Model{
 	function list_users(){
 		return $this->db->get('users')->result();
 	}
+	function user_login($uname,$pass){
+		$data['user_name']=$uname;
+		$data['password']=$pass;
+		$this->db->where($data);
+		//$this->db->select('user_id');
+		$query=$this->db->get('users');
+		if($query->num_rows()>0){
+			return $query->first_row();
+		} else {
+			return false;
+		}
+	}
 }

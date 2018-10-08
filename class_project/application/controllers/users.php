@@ -44,6 +44,44 @@ class users extends CI_Controller{
 		$data['users']=$this->user_model->list_users();
 		$this->load->view('list_users',$data);
 	}
+	function session_test(){
+		$data['name']='Mohammad Noor';
+		$data['username']='mnoor';
+		$data['email']='mnoor@gmail.com';
+		$this->session->set_userdata($data);
+		echo $this->session->userdata('email');
+	}
+	function u_login(){
+		$this->load->view('login');
+	}
+	
+	function login(){
+		$uname = $this->input->post('uname');
+		$pass= $this->input->post('pass');
+		$user= $this->user_model->user_login($uname,$pass);
+		if(!$user){
+			redirect('users/u_login');
+		}else{
+			//$this->session->sess_destroy();
+			$this->session->set_userdata('login',true);
+			$this->session->set_userdata('user',$user->user_id);
+			print_r($this->session->userdata());
+			
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }

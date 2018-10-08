@@ -6,6 +6,12 @@ class posts extends CI_Controller{
 		parent::__construct();
 		$this->load->model('post_model');
 	}
+	function se_test(){
+	$data=	$this->session->userdata();
+	foreach ($data as $usr) {
+		echo $usr;
+	}
+	}
 	function get_posts(){
 		//$this->load->helpers('url');
 		//$this->load->model('post_model');
