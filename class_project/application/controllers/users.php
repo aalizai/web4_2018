@@ -7,6 +7,7 @@ class users extends CI_Controller{
 		$this->load->model('user_model');
 		
 	}
+	
 	function get_user_cat(){
 		return $this->user_model->get_user_cat();
 	}
@@ -15,6 +16,7 @@ class users extends CI_Controller{
 		$data['user_cats']=$this->get_user_cat();
 		$this->load->view('new_user',$data);
 	}
+	
 	function create_user(){
 		$config['upload_path']          = './pictures/';
         $config['allowed_types']        = 'gif|jpg|png';
@@ -40,10 +42,12 @@ class users extends CI_Controller{
 		}
 		
 	}
+	
 	function list_users(){
 		$data['users']=$this->user_model->list_users();
 		$this->load->view('list_users',$data);
 	}
+	
 	function session_test(){
 		$data['name']='Mohammad Noor';
 		$data['username']='mnoor';
@@ -51,6 +55,7 @@ class users extends CI_Controller{
 		$this->session->set_userdata($data);
 		echo $this->session->userdata('email');
 	}
+
 	function u_login(){
 		$this->load->view('login');
 	}
@@ -64,24 +69,27 @@ class users extends CI_Controller{
 		}else{
 			//$this->session->sess_destroy();
 			$this->session->set_userdata('login',true);
-			$this->session->set_userdata('user',$user->user_id);
-			print_r($this->session->userdata());
+			$this->session->set_userdata('user_id',$user->user_id);
+			//print_r($this->session->userdata());
+			redirect('posts/get_posts');
 			
 		}
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	function logout(){
+		$this->session->sess_destroy();
+		redirect('users/u_login');
+	}
+	function ses_test(){
+		echo $this->session->userdata('user');
+	}
+	function lang_test(){
+		$this->lang->load('main','pushto');
+		echo $this->lang->line('par_about');
+	}
+	function lang($lang){
+		$this->lang->load('main',$lang);
+		$this->load->view('lang_test');
+	}
 	
 }

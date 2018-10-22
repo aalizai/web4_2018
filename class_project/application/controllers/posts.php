@@ -6,6 +6,9 @@ class posts extends CI_Controller{
 		parent::__construct();
 		$this->load->model('post_model');
 	}
+	function _main($data){
+		$this->load->view('main',$data);
+	}
 	function se_test(){
 	$data=	$this->session->userdata();
 	foreach ($data as $usr) {
@@ -13,6 +16,7 @@ class posts extends CI_Controller{
 	}
 	}
 	function get_posts(){
+		$this->load->model('user_model');
 		//$this->load->helpers('url');
 		//$this->load->model('post_model');
 		$ofset=$this->uri->segment(3);
@@ -21,13 +25,30 @@ class posts extends CI_Controller{
 		$con['total_rows']=$this->post_model->count_posts();
 		$con['per_page']=3;
 		$this->pagination->initialize($con);
+		if($this->session->has_userdata('user_id')){
+			$id=$this->session->userdata('user_id');
+			$data['user']=$this->user_model->get_user($id);
+		}
+		
 		$data['posts']=$this->post_model->get_posts($ofset,$con['per_page']);
-		$this->load->view('show_posts',$data);
+		$data['page_title']='Show posts';
+		$data['title']='Show posts';
+		
+		$data['page']='show_posts';
+		//$this->load->view('show_posts',$data);
+		$this->_main($data);
+		//print_r($data);
 	}
 	function get_post($x){
 		//$this->load->model('post_model');
 		$data['post']=$this->post_model->get_post($x);
-		$this->load->view('show_dails',$data);
+		//$this->load->view('show_dails',$data);
+		$data['page_title']='Details';
+		$data['title']='Details of a Post';
+		
+		$data['page']='show_dails';
+		//$this->load->view('show_posts',$data);
+		$this->_main($data);
 	}
 	function new_post(){
 		//$this->load->helpers('form');
@@ -45,7 +66,13 @@ class posts extends CI_Controller{
 	function update_post($id){
 		//$this->load->model('post_model');
 		$data['post']=$this->post_model->get_post($id);
-		$this->load->view('update_post',$data);
+		//$this->load->view('update_post',$data);
+		$data['page_title']='Update';
+		$data['title']='Updating a Post';
+		
+		$data['page']='update_post';
+		//$this->load->view('show_posts',$data);
+		$this->_main($data);
 	}
 	function update($id){
 		$data['title']= $this->input->post('title');
