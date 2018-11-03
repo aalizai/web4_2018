@@ -28,6 +28,15 @@ class user_model extends CI_Model{
 		$this->db->where('user_id',$id);
 		return $this->db->get('users')->row();
 	}
+	function check_uname($uname){
+		$query=$this->db->where('user_name',$uname)->get('users');
+		if ($query->num_rows()>0) {
+			return TRUE;
+			
+		} else {
+			return FALSE;
+		}
+	}
 	
 	
 	

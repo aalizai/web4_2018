@@ -5,6 +5,11 @@ class posts extends CI_Controller{
 	function __construct(){
 		parent::__construct();
 		$this->load->model('post_model');
+		if($this->session->has_userdata('lang')){
+			$this->lang->load('main',$this->session->userdata('lang'));
+		} else {
+			$this->lang->load('main');
+		}
 	}
 	function _main($data){
 		$this->load->view('main',$data);
@@ -16,6 +21,7 @@ class posts extends CI_Controller{
 	}
 	}
 	function get_posts(){
+		$this->session->set_userdata('last_visited',current_url());
 		$this->load->model('user_model');
 		//$this->load->helpers('url');
 		//$this->load->model('post_model');

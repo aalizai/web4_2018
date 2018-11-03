@@ -1,6 +1,6 @@
 
 
-<?php echo anchor('posts/new_post/',"<button>New Post</button>")?>
+<?php echo anchor('posts/new_post/',"<button>".$this->lang->line('new_post')."</button>")?>
 <?php if($this->session->has_userdata('login')){
 echo anchor('users/logout',"<button>logout</button>");
  echo $user->user_name;
@@ -17,5 +17,4 @@ echo anchor('users/logout',"<button>logout</button>");
 array('onclick'=>"return confirm('are you sure !!!!!')"))?>
 <hr />
 <?php endforeach?>
-
 <?php echo $this->pagination->create_links()?>

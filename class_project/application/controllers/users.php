@@ -16,8 +16,62 @@ class users extends CI_Controller{
 		$data['user_cats']=$this->get_user_cat();
 		$this->load->view('new_user',$data);
 	}
+	function check_uname($username){
+		if($this->user_model->check_uname($username)){
+			$this->form_validation->set_message('check_uname',
+			$username."Already Exist provide valid user name");
+			return FALSE;
+		} else {
+			return TRUE;
+		}
+	}
 	
 	function create_user(){
+		$this->load->library('form_validation');
+		$validation= array(
+			array(
+			'field'=>'fname',
+			'label'=>'First Nmae',
+			'rules'=>'required'
+			),
+			array(
+			'field'=>'lname',
+			'label'=>'Last Name',
+			'rules'=>'required'
+			),
+		array(
+			'field'=>'db',
+			'label'=>'Date of Birth',
+			'rules'=>'required'
+			),
+		array(
+			'field'=>'email',
+			'label'=>'Email',
+			'rules'=>'required'
+			),
+		array(
+			'field'=>'tel',
+			'label'=>'Telephone',
+			'rules'=>'required'
+			),
+			array(
+			'field'=>'uname',
+			'label'=>'User Name',
+			'rules'=>'required|callback_check_uname'
+			),
+			array(
+			'field'=>'pass',
+			'label'=>'password',
+			'rules'=>'required|min_length[4]|max_length[10]|regex_match[/^[A-Z]+\W+\w+$/]'
+			)
+		
+		);
+		
+		
+		$this->form_validation->set_rules($validation);
+		if($this->form_validation->run()==FALSE){
+			$this->new_user();
+		}else{
 		$config['upload_path']          = './pictures/';
         $config['allowed_types']        = 'gif|jpg|png';
 		$config['file_name']           = time();
@@ -39,6 +93,7 @@ class users extends CI_Controller{
 				$this->user_model->create_user($user);
 		} else {
 			$this->new_user();
+		}
 		}
 		
 	}
@@ -88,8 +143,10 @@ class users extends CI_Controller{
 		echo $this->lang->line('par_about');
 	}
 	function lang($lang){
-		$this->lang->load('main',$lang);
-		$this->load->view('lang_test');
+		//$this->lang->load('main',$lang);
+		$this->session->set_userdata('lang',$lang);
+		//$this->load->view('lang_test');
+		redirect($this->session->userdata('last_visited'));
 	}
 	
 }
